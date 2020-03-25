@@ -23,7 +23,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <maven.host>http://10.1.31.110:9091</maven.host>
         <cloud-starter.verion>1.0.0-SNAPSHOT</cloud-starter.verion>
 	</properties>
 
@@ -121,30 +120,6 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-        </repository>
-        <repository>
-            <id>nexusSnapashots</id>
-            <name>nexus-snapshots</name>
-            <url>${maven.host}/repository/maven-public/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <layout>default</layout>
-        </repository>
-        <repository>
-            <id>nexusMirror</id>
-            <name>nexus-snapshots</name>
-            <url>${maven.host}/repository/maven-public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <layout>default</layout>
         </repository>
     </repositories>
 	
@@ -245,11 +220,4 @@
 		</plugins>
 	</build>
 
-    <distributionManagement>
-        <repository>
-            <id>nexus3</id>
-            <name>cfgdc</name>
-            <url>http://10.1.31.110:9091/repository/cfgdc/</url>
-        </repository>
-    </distributionManagement>
 </project>
