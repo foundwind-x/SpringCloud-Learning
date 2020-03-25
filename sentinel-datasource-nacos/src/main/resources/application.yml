@@ -1,0 +1,24 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: sentinel-datasource-nacos
+  cloud:
+    sentinel:
+      transport:
+        ## Sentinel 控制台地址
+        dashboard: localhost:8080
+        ## 与控制台通信的客户端端口
+        port: 8700
+        ## 应用与Sentinel控制台的心跳间隔时间
+        heartbeat-interval-ms: 30000
+      datasource:
+        ds.nacos:
+          server-addr: localhost:8848
+          ## nacos配置中心dataId。在整合nacos做动态规则源时与Sentinel Dashboard中flowRuleNacosProvider中配置的dataId要一致。
+          dataId: ${spring.application.name}-sentinel
+          data-type: json
+          # 规则类型，取值见：
+          # org.springframework.cloud.alibaba.sentinel.datasource.RuleType
+          rule-type: flow
+          groupId: DEFAULT_GROUP
