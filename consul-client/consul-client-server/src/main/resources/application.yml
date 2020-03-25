@@ -1,0 +1,26 @@
+spring:
+  cloud:
+    consul:
+      discovery:
+        #设置健康检查失败多长时间后，取消注册
+        health-check-critical-timeout: 600s
+        #执行健康检查的频率，默认10s
+        health-check-interval: 5s
+        #健康检查的路径
+        health-check-path: ${server.servlet.context-path}/actuator/health
+        #health-check-timeout: 5s
+        # 实例名称
+        instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+        #重要，在注册服务到consul时用ip而非hostname主机名，默认为false
+        prefer-ip-address: true
+        #是否注册到consul服务器，默认为true
+        register: true
+        #默认取spring.application.name
+        service-name: ${spring.application.name}
+      retry:
+        #最大尝试次数，默认6
+        max-attempts: 6
+server:
+  servlet:
+    #加入context-path后; consul的健康检查路径也要加上context-path路径; FeignClient中也要指定相应的path，不然路径不对，无法调用服务;
+    context-path: /consul-client

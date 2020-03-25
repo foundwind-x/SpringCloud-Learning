@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: spring-cloud-gateway-sentinel
+  cloud:
+    sentinel:
+      transport:
+        ## Sentinel 控制台地址
+        dashboard: localhost:8080
+        ## 与控制台通信的客户端端口
+        port: 8719
+        ## 应用与Sentinel控制台的心跳间隔时间
+        heartbeat-interval-ms: 60000
+    gateway:
+      enabled: true
+      discovery:
+        locator:
+          lower-case-service-id: true
+      routes:
+        # Add your routes here.
+        - id: aliyun_route
+          uri: https://www.aliyun.com/
+          predicates:
+            - Path=/product/**
+        - id: httpbin_route
+          uri: https://httpbin.org
+          predicates:
+            - Path=/httpbin/**
+          filters:
+            - RewritePath=/httpbin/(?<segment>.*), /$\{segment}

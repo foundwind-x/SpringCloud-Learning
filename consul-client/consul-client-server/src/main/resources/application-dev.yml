@@ -1,0 +1,16 @@
+server:
+  port: 2001
+spring:
+  redis:
+    database: 1
+    host: 10.1.31.74
+    port: 6379
+    password: ''
+    # 使用lettuce连接池
+    lettuce:
+      pool:
+        max-active: 50   #连接池最大连接数,设 0 为没有限制
+        max-idle: 25     #最大等待连接的数量,设 0 为没有限制
+        max-wait: 500ms  #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
+        min-idle: 0     #最小等待连接中的数量,设 0 为没有限制
+      shutdown-timeout: 500ms

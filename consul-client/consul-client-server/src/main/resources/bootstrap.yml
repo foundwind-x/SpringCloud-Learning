@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: consul-client
+  cloud:
+    consul:
+      #使用consul的配置中心，K的生成策略为 ${prefix}/${name}${profile-separator}${spring.profiles.active}/${data-key}
+      #对应key的格式为config/consul-client:test/data
+      config:
+        #设置config是否启用，默认为true
+        enabled: true
+        #设置配置的值的格式,yaml/properties
+        format: yaml
+        #设置配置的基本目录
+        prefix: config
+        #配置分隔符,默认为‘,’
+        profile-separator: ':'
+        #表示consul上面的KEY值(或者说文件的名字) 默认是data
+        data-key: data
+        #默认${spring.application.name}
+        name: ${spring.application.name}
+        #设置默认的配置，被所有的应用读取
+        #defaultContext: application
+  profiles:
+    active: dev
+
+---
+spring:
+  profiles: dev
+  cloud:
+    consul:
+      #设置consul是否启用，默认为true
+      enabled: false
+      #使用consul的配置中心
+      config:
+        #设置config是否启用，默认为true
+        enabled: false
+      discovery:
+        register: false
+      host: localhost
+      port: 8500
+
+---
+spring:
+  profiles: test
+  cloud:
+    consul:
+      #设置consul是否启用，默认为true
+      enabled: true
+      #使用consul的配置中心
+      config:
+        #设置config是否启用，默认为true；
+        enabled: true
+        acl-token: b2b3ab67-fefe-8ee6-b851-ccbdcaa0fdb3
+      discovery:
+        acl-token: b2b3ab67-fefe-8ee6-b851-ccbdcaa0fdb3
+      host: 10.1.31.72
+      port: 8500

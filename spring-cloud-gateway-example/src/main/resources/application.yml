@@ -1,0 +1,142 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: spring-cloud-gateway-example
+  cloud:
+    consul:
+      host: 10.1.31.72
+      port: 8500
+      discovery:
+        acl-token: b2b3ab67-fefe-8ee6-b851-ccbdcaa0fdb3
+        register: false
+      enabled: false #是否启用consul
+    gateway:
+      discovery:
+        locator:
+          enabled: true #是否与服务发现组件进行整合
+#          lower-case-service-id: false #是否将请求路径上的服务名配置为小写
+      #设置网关默认的过滤器
+      default-filters:
+      ##hystrix熔断降级：当路由的uri长时间不响应时或请求失败时跳转到forward对应的路劲进行降级处理。
+      - name: Hystrix
+        args:
+          name: defaultFallbackCmd
+          fallbackUri: forward:/defaultFallback
+      routes:
+      - id: consul-client
+        uri: lb://consul-client
+        predicates:
+        - Path=/api/consul-client/**
+        filters:
+        - StripPrefix=1
+        - AuthGlobalFilter #在本路由启用全局过滤器
+        # 限流操作
+        - name: RequestRateLimiter
+          args:
+            # 令牌桶填充速率(其实也就是希望用户平均每秒执行多少请求,但是令牌桶优点是允许瞬间的激增请求)
+            redis-rate-limiter.replenishRate: 10
+            # 令牌桶的容量，允许在一秒钟内完成的最大请求数
+            redis-rate-limiter.burstCapacity: 20
+            # ip限流bean(用于限流的键的解析器的Bean对象的名字,它使用SpEL表达式根据#{@beanName}从Spring容器中获取Bean对象)
+            key-resolver: "#{@ipKeyResolver}"
+      ##hystrix熔断降级(具体服务中心配置)：测试连接：curl http://localhost:8888/hystrix_fallback/delay/3
+      - id: hystrix_fallback_route
+        uri: http://httpbin.org
+        predicates:
+        - Path=/hystrix_fallback/**
+        filters:
+        - StripPrefix=1
+        - name: Hystrix
+          args:
+            name: fallbackCmd
+            fallbackUri: forward:/hystrixFallback
+      ##########以下route是为了测试gateway内置的predicate
+      #请求参数匹配：请求中包含smile参数。测试链接：curl http://localhost:8888/headers?smile=test
+      - id: query-predicate-route-1
+        uri: http://httpbin.org
+        predicates:
+        - Query=smile
+      #请求参数匹配：属性名称加正则表达式。请求中包含keep参数，并且参数值是以 pu 开头的长度为三位的字符串。测试链接：curl http://localhost:8888/headers?keep=pub
+      - id: query-predicate-route-2
+        uri: http://httpbin.org
+        predicates:
+        - Query=keep, pu.
+      #Header属性匹配：属性名称加正则表达式。测试链接：curl http://localhost:8888/headers -H "X-Request-Id:88"
+      - id: header-predicate-route
+        uri: http://httpbin.org
+        predicates:
+        - Header=X-Request-Id, \d+
+      #Cookie属性匹配：Cookie属性名称加正则表达式。测试链接：curl http://localhost:8888/headers --cookie "sessionId=test"
+      - id: cookie-predicate-route
+        uri: http://httpbin.org
+        predicates:
+        - Cookie=sessionId, test
+      #Host匹配：一组匹配的域名列表。测试链接：curl http://localhost:8888/headers -H "Host: md.hostTest.com"
+      - id: host-predicate-route
+        uri: http://httpbin.org
+        predicates:
+        - Host=**.hostTest.com
+      #请求方式匹配：POST、GET、PUT、DELETE 等不同的请求方式来进行路由。测试链接：curl -X POST http://localhost:8888/headers
+      - id: method-predicate-route
+        uri: http://httpbin.org
+        predicates:
+        - Method=POST
+      #请求路径Path匹配：测试链接：curl http://localhost:8888/path-route/headers
+      - id: path-predicate-route
+        uri: http://httpbin.org
+        predicates:
+        - Path=/path-route/**
+        filters:
+        - StripPrefix=1   #拼接到uri时去掉的path前缀个数（以'/'分隔）
+      #请求ip地址进行匹配：例如 192.168.1.1/24 (其中 192.168.1.1 是 IP 地址，24 是子网掩码)
+      - id: ip-predicate-route
+        uri: http://httpbin.org
+        predicates:
+        - RemoteAddr=192.168.1.1/24
+      #组合使用：必须同时满足所有的条件才被这个路由匹配
+      - id: compose-predicate-route
+        uri: http://httpbin.org
+        predicates:
+        - Host=**.foo.org
+        - Path=/headers
+        - Method=GET
+        - Header=X-Request-Id, \d+
+         - Query=foo, ba.
+         - Query=baz
+         - Cookie=chocolate, ch.p
+  redis:
+    database: 2
+    host: 10.1.31.74
+    lettuce:
+      pool:
+        max-active: 50   #最大连接数据库连接数,设 0 为没有限制
+        max-idle: 8     #最大等待连接中的数量,设 0 为没有限制
+        max-wait: -1ms  #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
+        min-idle: 0     #最小等待连接中的数量,设 0 为没有限制
+      shutdown-timeout: 100ms
+    password: ''
+    port: 6379
+
+#hystrix超时设置
+hystrix:
+  command:
+    #默认超时时间设置，优先级低于下边的指定配置
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+    #具体某个hystrix command名称的超时设置
+    fallbackCmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+#    org.springframework.http.server.reactive: DEBUG
+#    org.springframework.web.reactive: DEBUG
+#    reactor.ipc.netty: DEBUG

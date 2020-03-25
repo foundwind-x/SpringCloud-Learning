@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: consul-consumer
+  cloud:
+    consul:
+      discovery:
+        #不注册到consul上
+        register: false
+  profiles:
+    active: dev
+
+#hystrix全局的超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+ribbon:
+  eager-load:
+    #是否启动饥饿加载模式，在具体服务没有被调用前提前初始化好Ribbon Client，默认false
+    enabled: true
+    #使用饥饿模式的服务列表
+    clients: consul-client,zswb
+  #同个实例的重试次数：同一个实例的最大自动重试次数，默认为1次，不包括首次
+  MaxAutoRetries: 1
+  #切换实例的重试次数：要重试的下一个实例的最大数量，默认为1
+  MaxAutoRetriesNextServer: 1
+  #是否所有的操作都重试：默认为false。设为false，只对get请求重试；设为true，便会对所有的请求进行重试，如果是put或post等写操作，如果服务器接口没做幂等性，会产生不好的结果
+  OkToRetryOnAllOperations: false
+  #从注册中心刷新服务器列表信息的时间间隔：默认为2000毫秒，即2秒
+  ServerListRefreshInterval: 2000
+  #请求连接的超时时间：单位为毫秒
+  ConnectTimeout: 1000
+  #请求处理的超时时间：单位为毫秒
+  ReadTimeout: 1500

@@ -1,0 +1,9 @@
+#logging:
+#    file: ${spring.application.name}.log
+server:
+    port: 2101
+spring:
+    cloud:
+        consul:
+            host: 10.1.31.72
+            port: 8500
