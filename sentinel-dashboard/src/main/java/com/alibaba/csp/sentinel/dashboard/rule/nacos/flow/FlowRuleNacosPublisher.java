@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.csp.sentinel.dashboard.rule.nacos;
+package com.alibaba.csp.sentinel.dashboard.rule.nacos.flow;
 
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.rule.DynamicRulePublisher;
+import com.alibaba.csp.sentinel.dashboard.rule.nacos.NacosConfUtil;
 import com.alibaba.csp.sentinel.datasource.Converter;
 import com.alibaba.csp.sentinel.util.AssertUtil;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -26,7 +27,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * @author Eric Zhao
+ * @author fangzheng
  * @since 1.4.0
  */
 @Component("flowRuleNacosPublisher")
@@ -36,9 +37,6 @@ public class FlowRuleNacosPublisher implements DynamicRulePublisher<List<FlowRul
     private ConfigService configService;
     @Autowired
     private Converter<List<FlowRuleEntity>, String> converter;
-
-    public static final String FLOW_DATA_ID_POSTFIX = "-sentinel";
-    public static final String GROUP_ID = "DEFAULT_GROUP";
 
     @Override
     public void publish(String app, List<FlowRuleEntity> rules) throws Exception {
@@ -50,6 +48,6 @@ public class FlowRuleNacosPublisher implements DynamicRulePublisher<List<FlowRul
          * app即appName，是Sentinel中的服务名称。
          * configService.publishConfig方法是推送Sentinel Dashboard中配置信息到Nacos的具体操作。DataId和GroupId分别对应客户端使用时候的对应配置
          */
-        configService.publishConfig(app + FLOW_DATA_ID_POSTFIX, GROUP_ID, converter.convert(rules));
+        configService.publishConfig(app + NacosConfUtil.FLOW_DATA_ID_POSTFIX, NacosConfUtil.GROUP_ID, converter.convert(rules));
     }
 }

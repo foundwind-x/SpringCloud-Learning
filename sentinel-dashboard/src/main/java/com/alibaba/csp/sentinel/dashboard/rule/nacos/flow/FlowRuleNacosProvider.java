@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.csp.sentinel.dashboard.rule.nacos;
+package com.alibaba.csp.sentinel.dashboard.rule.nacos.flow;
 
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.rule.DynamicRuleProvider;
+import com.alibaba.csp.sentinel.dashboard.rule.nacos.NacosConfUtil;
 import com.alibaba.csp.sentinel.datasource.Converter;
 import com.alibaba.csp.sentinel.util.StringUtil;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -27,7 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Eric Zhao
+ * @Description 从Nacos获取限流规则
+ * @author fangzheng
  * @since 1.4.0
  */
 @Component("flowRuleNacosProvider")
@@ -38,16 +40,13 @@ public class FlowRuleNacosProvider implements DynamicRuleProvider<List<FlowRuleE
     @Autowired
     private Converter<String, List<FlowRuleEntity>> converter;
 
-    public static final String FLOW_DATA_ID_POSTFIX = "-sentinel";
-    public static final String GROUP_ID = "DEFAULT_GROUP";
-
     @Override
     public List<FlowRuleEntity> getRules(String appName) throws Exception {
         /**
          * getRules方法中的appName参数是Sentinel中的服务名称。
          * configService.getConfig方法是从Nacos中获取配置信息的具体操作。其中，DataId和GroupId分别对应客户端使用时候的对应配置
          */
-        String rules = configService.getConfig(appName + FLOW_DATA_ID_POSTFIX, GROUP_ID, 3000);
+        String rules = configService.getConfig(appName + NacosConfUtil.FLOW_DATA_ID_POSTFIX, NacosConfUtil.GROUP_ID, 3000);
         if (StringUtil.isEmpty(rules)) {
             return new ArrayList<>();
         }
