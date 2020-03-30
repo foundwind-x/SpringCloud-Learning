@@ -16,7 +16,7 @@
 
     <properties>
         <spring-boot.version>2.1.9.RELEASE</spring-boot.version>
-        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+        <spring-cloud.version>Greenwich.SR5</spring-cloud.version>
         <alibaba-cloud.version>2.2.0.RELEASE</alibaba-cloud.version>
         <spring-cloud-alibaba.version>0.2.2.RELEASE</spring-cloud-alibaba.version>
         <nacos-client.version>1.1.4</nacos-client.version>

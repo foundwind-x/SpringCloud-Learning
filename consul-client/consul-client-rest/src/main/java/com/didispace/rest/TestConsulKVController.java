@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @ClassName TestConsulKVController
- * @Description TODO
+ * @Description 测试consul配置中心功能
  * @Author fangzheng
  * @Date 2019/10/23 11:18
  * @Version V1.0
@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestConsulKVController {
 
-   //@Value("${spring.redis.host}")
+    /**
+     * 当使用consul kv时，spring.redis.host为consul中配置的属性值；配置中心的属性优先级大于application.yml，小于bootstrap.yml
+     */
+    @Value("${spring.redis.host}")
     private String redisHost;
 
     @GetMapping("consul/config")

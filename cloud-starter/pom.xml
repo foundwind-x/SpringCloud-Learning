@@ -11,8 +11,8 @@
     <packaging>pom</packaging>
 
     <properties>
-        <spring-boot.version>2.1.7.RELEASE</spring-boot.version>
-        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+        <spring-boot.version>2.1.9.RELEASE</spring-boot.version>
+        <spring-cloud.version>Greenwich.SR5</spring-cloud.version>
         <lombok.version>1.18.12</lombok.version>
         <mybatis-plus.version>3.1.2</mybatis-plus.version>
     </properties>

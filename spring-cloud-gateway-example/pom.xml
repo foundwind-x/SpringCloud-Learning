@@ -10,7 +10,6 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<spring-cloud.version>Greenwich.SR2</spring-cloud.version>
         <cloud-starter.verion>1.0.0-SNAPSHOT</cloud-starter.verion>
 	</properties>
 
