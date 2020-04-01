@@ -38,7 +38,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-consul-discovery</artifactId>
 		</dependency>
-        <!--consul中健康检查需要用到actuator，服务provider注册到consul上需要添加（单纯consumer则不需要），不添加会check failing-->
+        <!--Actuator监控组件，consul中健康检查的默认url就来自这个组件，服务provider需要注册到consul上并且不自定义健康检查url的情况下需要该组件，不添加会check failing-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
