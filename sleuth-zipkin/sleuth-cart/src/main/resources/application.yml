@@ -1,0 +1,24 @@
+server:
+  port: 9002
+  servlet:
+    context-path: /sleuth-cart
+spring:
+  application:
+    name: sleuth-cart
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        health-check-path: ${server.servlet.context-path}/actuator/health
+        prefer-ip-address: true
+  zipkin:
+    base-url: http://localhost:9411/
+    service:
+      name: sleuth-cart
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      #设置采样率，默认为0.1，设置太高可能会影响性能；这里设置为1仅推荐测试使用
+      probability: 1
