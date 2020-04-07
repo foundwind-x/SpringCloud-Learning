@@ -12,7 +12,7 @@ spring:
       discovery:
         health-check-path: ${server.servlet.context-path}/actuator/health
         prefer-ip-address: true
-      enabled: false
+      enabled: true
   zipkin:
     #sender.type=web时需要
 #    base-url: http://localhost:9411/
@@ -27,3 +27,9 @@ spring:
     sampler:
       #设置采样率，默认为0.1，设置太高可能会影响性能；这里设置为1仅推荐测试使用
       probability: 1
+    web:
+      #追踪web是跳过的路径
+      skip-pattern: /actuator/*|/api-docs.*|/swagger.*|.*\.png|.*\.css|.*\.js|.*\.html|/favicon.ico|/hystrix.stream
+    async:
+      #是否追踪@Async注解和ThreadPoolTaskExecutor下面的类
+      enabled: false
