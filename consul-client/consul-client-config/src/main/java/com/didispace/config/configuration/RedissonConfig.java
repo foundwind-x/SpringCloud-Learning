@@ -22,6 +22,8 @@ public class RedissonConfig {
     @Bean(destroyMethod="shutdown")
     public RedissonClient redisson() throws IOException {
         Config config = Config.fromYAML(new ClassPathResource("redisson-single.yml").getInputStream());
+        //减少连接数
+        config.useSingleServer().setConnectionMinimumIdleSize(10);
         RedissonClient redisson = Redisson.create(config);
 
         return redisson;

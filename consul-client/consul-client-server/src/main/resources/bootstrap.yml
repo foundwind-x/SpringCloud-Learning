@@ -29,7 +29,7 @@ spring:
   cloud:
     consul:
       #设置consul是否启用，默认为true
-      enabled: false
+#      enabled: false
       #使用consul的配置中心
       config:
         #设置config是否启用，默认为true
