@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName RedissonTestServiceImpl
- * @Description 测试Redisson使用
+ * @Description 测试分布式锁Redisson使用
  * @Author fangzheng
  * @Date 2019/9/26 15:54
  * @Version V1.0

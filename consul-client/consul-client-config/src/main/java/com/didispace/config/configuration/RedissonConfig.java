@@ -19,6 +19,11 @@ import java.io.IOException;
 @Configuration
 public class RedissonConfig {
 
+    /**
+     * 单实例普通分布式锁使用
+     * @return
+     * @throws IOException
+     */
     @Bean(destroyMethod="shutdown")
     public RedissonClient redisson() throws IOException {
         Config config = Config.fromYAML(new ClassPathResource("redisson-single.yml").getInputStream());

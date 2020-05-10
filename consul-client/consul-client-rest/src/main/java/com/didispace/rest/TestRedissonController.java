@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @ClassName TestRedissonController
- * @Description TODO
+ * @Description 测试分布式锁Redisson使用
  * @Author fangzheng
  * @Date 2019/9/26 17:09
  * @Version V1.0
