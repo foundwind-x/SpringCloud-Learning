@@ -6,7 +6,8 @@ spring:
     name: spring-cloud-gateway-example
   cloud:
     consul:
-      host: 10.1.31.72
+#      host: 10.1.31.72
+      host: localhost
       port: 8500
       discovery:
         acl-token: b2b3ab67-fefe-8ee6-b851-ccbdcaa0fdb3
@@ -134,6 +135,15 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 3000
+
+#ribbon
+consul-client:
+  ribbon:
+    #随机规则
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+    #自定义IpHashRule
+    NFLoadBalancerRuleClassName: com.fz.springcloud.gateway.rule.IpHashRule
+
 logging:
   level:
     org.springframework.cloud.gateway: TRACE
