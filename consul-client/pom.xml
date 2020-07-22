@@ -80,13 +80,14 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.9</version>
         </dependency>
+        <!--redisson-->
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
             <version>3.11.4</version>
         </dependency>
-        <!--与Lettuce有冲突的地方，需要排除依赖项-
-        <dependency>
+        <!--与Lettuce有冲突的地方，需要排除依赖项-->
+       <!-- <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson-spring-boot-starter</artifactId>
             <version>3.11.4</version>
