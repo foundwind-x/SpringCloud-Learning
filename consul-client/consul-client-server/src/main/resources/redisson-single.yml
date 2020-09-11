@@ -10,7 +10,7 @@ singleServerConfig:
     password: null
     subscriptionsPerConnection: 5
     clientName: null
-    address: "redis://10.1.31.74:6379"
+    address: "redis://10.201.15.46:6379"
     subscriptionConnectionMinimumIdleSize: 1
     subscriptionConnectionPoolSize: 50
     connectionMinimumIdleSize: 32
